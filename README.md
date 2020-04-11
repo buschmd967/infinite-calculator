@@ -6,6 +6,10 @@
   * Multiplication (\*)
   * Power (^)
 
+##Compilation Instructions:
+use `gcc main.c -lm` to compile
+
+
 ## Usage:
 
   ./my-calc \<input file\> \<output file\>
