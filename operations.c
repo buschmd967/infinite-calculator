@@ -95,7 +95,8 @@ list_t * dec2bin(int a){ // only single digit
 
 	list_t * outlist;
 	outlist = make_node(tmpstr[3]);
-	for(int i = 2; i>=0; --i){
+	int i;
+	for(i = 2; i>=0; --i){
 		add_node(outlist, tmpstr[i]);
 	}
 	free(tmpstr);
@@ -103,9 +104,6 @@ list_t * dec2bin(int a){ // only single digit
 }
 
 list_t * add(list_t * num1, list_t * num2){
-	//fprintf(stderr, "-----ADD-----\n");
-	//fprintf(stderr, "num1:\n");
-	//show(num1);
 	list_t * out;
 	list_t * larger = copy_list(getLarger(num1, num2));
 	list_t * l_ptr = larger;
@@ -148,10 +146,6 @@ list_t * add(list_t * num1, list_t * num2){
 	free_list(larger);
 	free_list(smaller);
 
-	//fprintf(stderr, "out add:\n");
-	//show_debug(out);
-	//fprintf(stderr, "done\n");
-	//fprintf(stderr, "\nDone\n");
 	return out;
 }
 
@@ -194,10 +188,6 @@ list_t * sub(list_t * num1, list_t * num2){ //num1 - num2
 
 
 
-	//fprintf(stderr, "1:\n");
-	//show(num1c);
-	//fprintf(stderr, "\n2:\n");
-	//show(num2c);
 	list_t * one;
 	one = make_node(1);
 	list_t * new2;
@@ -209,27 +199,17 @@ list_t * sub(list_t * num1, list_t * num2){ //num1 - num2
 	free_list(num2c);
 	free_list(one);
 
-	//free_list(out);
-
-
 
 	list_t * out_ptr = out;
 	list_t * num1c_ptr = num1c;
-	//fprintf(stderr, "\nout:\n");
-	//show(out);
-	//fprintf(stderr, "\nnum1c:\n");
-	//show(num1c);
 	while((out_ptr != NULL) && (num1c_ptr != NULL))
 	{
 		out_ptr = out_ptr->next;
 		num1c_ptr = num1c_ptr->next;
 	}
 	free_list(num1c);
-	//fprintf(stderr, "\nout: %d\n", out_ptr);
-	//fprintf(stderr, "num1c_ptr: %d\n", num1c_ptr);
 	if (out_ptr == NULL) //both will be NULL
 	{
-		//fprintf(stderr, "negative\n");
 		return NULL;
 	}
 	list_t * ptr = out;
@@ -240,24 +220,6 @@ list_t * sub(list_t * num1, list_t * num2){ //num1 - num2
 	shorten_list(out);
 	return out;
 }
-/*
-8-1: 100111
-8-2: 10110
-8-3: 10101
-negatives:
-1-8:  1000
-2-8:  1010
-2-7:
-010
-111-
-011
-6-7:
-110
-111-
-111
-7-7: 10000
-
-*/
 
 list_t * mult(list_t * num1, list_t * num2)
 {
@@ -266,10 +228,7 @@ list_t * mult(list_t * num1, list_t * num2)
 
 	list_t * smaller;
 	list_t * temp_smaller = getSmaller(num1, num2);
-	//fprintf(stderr, "temp_smaller: %d\n", bin2dec(temp_smaller));
 	smaller = copy_list(temp_smaller);
-	//fprintf(stderr, "smaller: %d\n", bin2dec(smaller));
-	//show(smaller);
 	list_t * larger;
 	if(num2 == temp_smaller){ // get larger and smaller length numbers for speed
 		larger = copy_list(num1);
@@ -277,10 +236,6 @@ list_t * mult(list_t * num1, list_t * num2)
 	else{
 		larger = copy_list(num2);
 	}
-	//fprintf(stderr, "\n\nsmaller:\n");
-	//show(smaller);
-	//fprintf(stderr, "\nlarger:\n");
-	//show(larger);
 	if (isZero(smaller))
 	{
 		free_list(larger);
@@ -299,37 +254,27 @@ list_t * mult(list_t * num1, list_t * num2)
 	if(smaller->value)
 	{
 		out = copy_list(larger);
-		//fprintf(stderr, "\nout:\n");
-		//show(out);
 	}
 	else
 	{
-		//fprintf(stderr, "no out");
 		out = make_node(0);
 	}
 	while (s_ptr != NULL)
 	{
-		//fprintf(stderr, "s_ptr: %d\n", s_ptr->value);
 		num_to_add = make_node(l_ptr->value & s_ptr->value);
-		//fprintf(stderr, "adding %d\n", (l_ptr->value & s_ptr->value));
 		l_ptr = l_ptr->next;
 		while(l_ptr != NULL)
 		{
-			//fprintf(stderr, "adding %d\n", (l_ptr->value & s_ptr->value));
 			add_node(num_to_add, (l_ptr->value & s_ptr->value));
 			l_ptr = l_ptr->next;
 		}
 
 
 		p_ptr->next = num_to_add;
-		//fprintf(stderr, "Num to add:\n");
-		//show(num_to_add);
 
 		new_out = add(out, padding);
 		free_list(out);
 		out = new_out;
-		//fprintf(stderr, "out:\n");
-		//show(out);
 
 		free_list(num_to_add);
 
@@ -339,9 +284,6 @@ list_t * mult(list_t * num1, list_t * num2)
 		l_ptr = larger;
 		s_ptr = s_ptr->next;
 	}
-	//fprintf(stderr, "\n");
-	//show(out);
-	//fprintf(stderr, "Done\n");
 	free_list(padding);
 	free_list(larger);
 	free_list(smaller);
@@ -356,15 +298,9 @@ list_t * old_mult(list_t * num1, list_t * num2){
 	shorten_list(num1);
 	shorten_list(num2);
 
-	//fprintf(stderr, "num1: \n");
-	//show(num2);
-	//fprintf(stderr, "\n");
 	list_t * smaller;
 	list_t * temp_smaller = getSmaller(num1, num2);
-	//fprintf(stderr, "temp_smaller: %d\n", bin2dec(temp_smaller));
 	smaller = copy_list(temp_smaller);
-	//fprintf(stderr, "smaller: %d\n", bin2dec(smaller));
-	//show(smaller);
 	list_t * larger;
 	if(num2 == temp_smaller){ // get larger and smaller length numbers for speed
 		larger = num1;
@@ -380,14 +316,14 @@ list_t * old_mult(list_t * num1, list_t * num2){
 
 	list_t * out = copy_list(larger);
 	list_t * max_int = make_node(1);
-	for(int i = 0; i <= 30; ++i)
+	int i;
+	for(i = 0; i <= 30; ++i)
 	{
 		add_node(max_int, 1);
 	}
 	list_t * new_out;
 	list_t * new_smaller;
 	int dec2 = bin2dec(smaller);
-	//sprintf(dec2_str, "%d", dec2);
 	if(dec2 == 2147483647){
 		new_smaller = sub(smaller, max_int);
 		free_list(smaller);
@@ -400,10 +336,6 @@ list_t * old_mult(list_t * num1, list_t * num2){
 	}
 	--dec2; //out starts as a copy of larger
 	while(dec2 > 0){
-		//fprintf(stderr, "sub:\n");
-		//show(sub(smaller, one));
-		//fprintf(stderr, "%d more, %d + %d\n", dec2, bin2dec(out), bin2dec(larger));
-		//fprintf(stderr, "%d\n", dec2);
 		new_out = add(out, larger);
 		free_list(out);
 		out = new_out;
@@ -428,7 +360,6 @@ list_t * old_mult(list_t * num1, list_t * num2){
 			}
 		}
 	}
-	//fprintf(stderr, "DONE\n");
 	return out;
 }
 
@@ -450,7 +381,8 @@ list_t * power(list_t * in1, list_t * in2){ //num1 ^ num2
 	list_t * new_num2;
 	one = make_node(1);
 	out = copy_list(num1);
-	for(int dec = bin2dec(num2); dec > 1; dec = bin2dec(num2)){
+	int dec;
+	for(dec = bin2dec(num2); dec > 1; dec = bin2dec(num2)){
 		new_num2 = sub(num2, one);
 		free_list(num2);
 		num2 = new_num2;
@@ -467,9 +399,7 @@ list_t * power(list_t * in1, list_t * in2){ //num1 ^ num2
 
 list_t * str2bin(char * str)
 {
-	//fprintf(stderr, "str2bin start\n");
 	int length;
-	//fprintf(stderr, "string: %s\n", str);
 	for(length = 0; str[length] != '\0'; ++length);
 	int str_index = length;
 	int current_int;
@@ -490,38 +420,15 @@ list_t * str2bin(char * str)
 
 	int i = 0;
 
-	for(int str_index = 0; str_index < length; ++str_index)
+	for(str_index = 0; str_index < length; ++str_index)
 	{
-		//fprintf(stderr, "-----start loop-----\n");
 		current_int = str[length - str_index -1] - '0';
-		/*
-		fprintf(stderr, "current int: %d\n", current_int);
-		fprintf(stderr, "\nout:\n");
-		show(out);
-		fprintf(stderr, "\nlitr:\n");
-		show(litr);
-		fprintf(stderr, "\nten:\n");
-		show(ten);
-		fprintf(stderr, "\ndec2bin:\n");
-		show(dec2bin(current_int));
-		fprintf(stderr, "\npower\n");
-		show(power(ten, litr));
-		fprintf(stderr, "\nmult:\n");
-		show(mult(dec2bin(current_int), power(ten, litr) ));*/
 
 		current_int_l = dec2bin(current_int);
 
 		mult_l = mult(current_int_l, place );
 		new_out = add(out, mult_l);//add the current number * 10 ^ whavever place to the output.
-		//free_list(out);
-		out = new_out;/*
-		fprintf(stderr, "\nNew out:\n");
-		show_debug(out);
-		fprintf(stderr, "add litr:\n");
-		fprintf(stderr, "litr:\n");
-		show_debug(litr);
-		fprintf(stderr, "one:\n");
-		show_debug(one);*/
+		out = new_out;
 		new_place = mult(place, ten);
 		free(place);
 		place = new_place;
@@ -532,22 +439,8 @@ list_t * str2bin(char * str)
 
 		free_list(current_int_l);
 		free_list(mult_l);
-		//fprintf(stderr, "power before free:\n");
-		//show_debug(power_l);
-		//fprintf(stderr,"new_itr before power free\n");
-		//show(new_litr);
-		//free_list(power_l);
-		//fprintf(stderr, "power after free:\n");
-		//power_l = NULL;
-		//fprintf(stderr, "after\n");
-		//show(new_litr);
-
-		//fprintf(stderr, "\n-----end loop-----\n");
 	}
-	//fprintf(stderr, "\ndone\n");
 	free_list(ten);
-	//free_list(one);
-	//free_list(power_l);
 	return out;
 }
 
@@ -562,8 +455,6 @@ void output(list_t * num, FILE * ofp)
 	++arr_index;
 
 	list_t * in = copy_list(num);
-	//fprintf(stderr, "in\n");
-	//show_debug(in);
 	list_t * new_in; //to do copys
 	list_t * tmp;
 	list_t * ptr = in;
@@ -574,10 +465,7 @@ void output(list_t * num, FILE * ofp)
 
 	num_to_subtract = mult(num_to_subtract, ten);
 	num_to_subtract_arr[arr_index] = num_to_subtract;
-	//fprintf(stderr, "1");
 	tmp = sub(in, num_to_subtract);
-	//fprintf(stderr, "tmp: %d\n", tmp);
-	//show_debug(tmp);
 	fprintf(stderr, "\n");
 	//get maximum number [multiple of 10] that goes into input
 	while(tmp != NULL)
@@ -589,34 +477,16 @@ void output(list_t * num, FILE * ofp)
 			arr_len *= 2;
 			num_to_subtract_arr = (list_t **) realloc(num_to_subtract_arr, arr_len * sizeof(list_t *));
 		}
+		//update num_to_subtract
 		num_to_subtract = mult(num_to_subtract, ten);
 		num_to_subtract_arr[arr_index] = num_to_subtract;
-		//update num_to_subtract
-
-
-		//fprintf(stderr, "2");
-		//fprintf(stderr, "3");
 
 
 		//update tmp
 		free_list(tmp);
-
-		//fprintf(stderr, "sub start\n");
 		tmp = sub(in, num_to_subtract);
-		//fprintf(stderr, "sub stop\n");
-		//fprintf(stderr, "tmp: %d\n", tmp);
 
 	}
-
-
-
-	// fprintf(stderr, "%s\n", num_to_subtract_str);
-	// fprintf(stderr, "index: %d\n", str_index);
-
-	//fprintf(stderr, "str: %s\n", num_to_subtract_str);
-	//fprintf(stderr, "num_to_subtract:\n");
-	//show(num_to_subtract);
-	//fprintf(stderr, "\n");
 
 	tmp = sub(in, num_to_subtract_arr[arr_index-1]);
 
@@ -627,108 +497,30 @@ void output(list_t * num, FILE * ofp)
 
 	while(arr_index > 0)
 	{
-		//fprintf(stderr, "freeing: \n");
-		//fprintf(stderr, "arr_index: %d", arr_index);
-		//show_debug(num_to_subtract_arr[arr_index]);
 		free_list(num_to_subtract_arr[arr_index]);
 		--arr_index;
-		//fprintf(stderr, "\n\ncurrent loop:\n");
-		//fprintf(stderr, "arr_index: %d\n", arr_index);
-		//show_debug(num_to_subtract_arr[arr_index]);
-		//fprintf(stderr, "num sub: %s\n", num_to_subtract_str);
-		//fprintf(stderr, "num2sub\n");
-		//show(num_to_subtract_arr[arr_index]);
 		tmp = sub(in, num_to_subtract_arr[arr_index]);
 		while(tmp != NULL)
 		{
-			//fprintf(stderr, "tmp\n");
-			//show_debug(tmp);
-			//show(in);
-			//fprintf(stderr, "\n");
 			new_in = sub(in, num_to_subtract_arr[arr_index]);
-			//fprintf(stderr, "in\n");
-			//show_debug(new_in);
 			free_list(in);
 
 			in = new_in;
-			//fprintf(stderr, "in\n");
-			//free_list(tmp);
-			//show(in);
-			//fprintf(stderr, "\nhere\n");
-			//fprintf(stderr, "num_to_sub\n");
-			//show(num_to_subtract_arr[arr_index]);
-			//show(num_to_subtract);
 			tmp = sub(in, num_to_subtract_arr[arr_index]);
-			//fprintf(stderr, "there\n");
-			//fprintf(stderr, "tmp:\n");
-			//show(tmp);
 
 			++current_int;
 
 		}
 
-		//fprintf(stderr, "current int: %d\n", current_int);
-		//fprintf(stderr, "current_int: %d\n", current_int);
 		out_str[out_index] = current_int + '0';
 		current_int = 0;
 		++out_index;
-		//deal with num_to_subtract_str
-		//fprintf(stderr, "b4free\n");
-		//free_list(num_to_subtract_arr[arr_index]);
-		//fprintf(stderr, "afterfree\n");
-		//--arr_index;
-		//deal with tmp
-		//fprintf(stderr, "index:%d\n", arr_index);
-		//num_to_subtract = num_to_subtract_arr[arr_index];
-
-
-		//fprintf(stderr, "tmpend\n");
-		//show_debug(tmp);
-		//fprintf(stderr, "here\n");
-
 	}
 	free_list(num_to_subtract_arr[arr_index]);
 	free(num_to_subtract_arr);
 
-	//fprintf(stderr, "done");
 	out_str[out_index] = '\0';
-	//fprintf(stderr, "answer\n");
 	fprintf(ofp, "%s\n", out_str);
 	return;
 }
 
-#ifdef DEBUG
-int main(){
-		//list_t * f = dec2bin(1);
-		//show(f);
-
-		//list_t * a = str2bin("10");
-		list_t * a = make_node(1);
-		//list_t * b = make_node(1);
-		//show(sub(a, b));
-		output(a);
-
-
-		/*while(true)
-		{
-			c = sub(b,a);
-			if(c != NULL)
-			{
-				show(c);
-				fprintf(stderr, "\n");
-				free_list(c);
-			}
-		}*/
-		//list_t * b = copy_list(a);
-		//list_t * c = mult(a, b);
-		//show(a);
-		//list_t * c = old_mult(a, b);
-		//output(a);
-
-
-		//new_output(a);
-		//output(a);
-
-	return 0;
-}
-#endif
