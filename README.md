@@ -33,7 +33,7 @@ use `gcc main.c -lm` to compile
 
  ```
  4
-  16
+ 16
   ```
 
 
