@@ -12,7 +12,7 @@ use `gcc main.c -lm` to compile
 
 ## Usage:
 
-  `./my-calc \<input file\> \<output file\>`
+  `./my-calc <input file> <output file>`
 
   The input file must include a line(s) consisting of numbers separated by any symbol listed above. An example of this might be:
 
