@@ -24,14 +24,12 @@ use `gcc main.c -lm` to compile
 
   If multiple lines are included, multiple answers will be written to the out file separated by one line. If the in file is:
 
-  `2 + 2
-
-4 * 4`
+  ```2 + 2
+  4 * 4```
 
   The outfile would look like:
 
-  `4
-
-  16`
+ ```4
+  16```
 
 
