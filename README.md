@@ -8,6 +8,7 @@
 
 
 ##Compilation Instructions:
+
 use `gcc main.c -lm` to compile
 
 
