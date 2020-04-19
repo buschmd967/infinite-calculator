@@ -7,7 +7,7 @@
   * Power (^)
 
 
-##Compilation Instructions:
+## Compilation Instructions:
 
 use `gcc main.c -lm` to compile
 
